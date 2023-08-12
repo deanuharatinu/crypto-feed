@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedItem
 import com.hightech.cryptoapp.crypto.feed.presentation.CryptoFeedUiState
 import com.hightech.cryptoapp.crypto.feed.presentation.CryptoFeedViewModel
@@ -30,147 +29,147 @@ import com.hightech.cryptoapp.theme.Purple40
 
 @Composable
 fun CryptoFeedRoute(
-    viewModel: CryptoFeedViewModel = viewModel(factory = CryptoFeedViewModel.FACTORY),
-    onNavigateToCryptoDetails: (CryptoFeedItem) -> Unit
+  viewModel: CryptoFeedViewModel,
+  onNavigateToCryptoDetails: (CryptoFeedItem) -> Unit
 ) {
-    val cryptoFeedUiState by viewModel.cryptoFeedUiState.collectAsStateWithLifecycle()
+  val cryptoFeedUiState by viewModel.cryptoFeedUiState.collectAsStateWithLifecycle()
 
-    Log.d("loadCryptoFeed", "$cryptoFeedUiState")
+  Log.d("loadCryptoFeed", "$cryptoFeedUiState")
 
-    CryptoFeedScreen(
-        cryptoFeedUiState = cryptoFeedUiState,
-        onRefreshCryptoFeed = viewModel::loadCryptoFeed,
-        onNavigateToCryptoDetails = onNavigateToCryptoDetails
-    )
+  CryptoFeedScreen(
+    cryptoFeedUiState = cryptoFeedUiState,
+    onRefreshCryptoFeed = viewModel::loadCryptoFeed,
+    onNavigateToCryptoDetails = onNavigateToCryptoDetails
+  )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun CryptoFeedScreen(
-    modifier: Modifier = Modifier,
-    cryptoFeedUiState: CryptoFeedUiState,
-    onRefreshCryptoFeed: () -> Unit,
-    onNavigateToCryptoDetails: (CryptoFeedItem) -> Unit
+  modifier: Modifier = Modifier,
+  cryptoFeedUiState: CryptoFeedUiState,
+  onRefreshCryptoFeed: () -> Unit,
+  onNavigateToCryptoDetails: (CryptoFeedItem) -> Unit
 ) {
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = cryptoFeedUiState.isLoading,
-        onRefresh = onRefreshCryptoFeed
-    )
+  val pullRefreshState = rememberPullRefreshState(
+    refreshing = cryptoFeedUiState.isLoading,
+    onRefresh = onRefreshCryptoFeed
+  )
 
-    Scaffold(topBar = {
-        CenterAlignedTopAppBar(
-            title = {
-                Text(
-                    text = "Crypto Feed",
-                    maxLines = 1,
-                    color = Color.White
-                )
-            },
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = Purple40
-            )
+  Scaffold(topBar = {
+    CenterAlignedTopAppBar(
+      title = {
+        Text(
+          text = "Crypto Feed",
+          maxLines = 1,
+          color = Color.White
         )
-    }, content = {
-        val contentModifier = modifier
-            .padding(it)
-            .fillMaxSize()
-            .pullRefresh(pullRefreshState)
+      },
+      colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        containerColor = Purple40
+      )
+    )
+  }, content = {
+    val contentModifier = modifier
+      .padding(it)
+      .fillMaxSize()
+      .pullRefresh(pullRefreshState)
 
-        LoadingContent(
-            pullRefreshState = pullRefreshState,
-            loading = cryptoFeedUiState.isLoading,
-            empty = when (cryptoFeedUiState) {
-                is CryptoFeedUiState.HasCryptoFeed -> false
-                is CryptoFeedUiState.NoCryptoFeed -> cryptoFeedUiState.isLoading
-            },
-            emptyContent = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center)
-                ) {
-                    PullRefresh(
-                        loading = cryptoFeedUiState.isLoading,
-                        pullRefreshState = pullRefreshState,
-                        Modifier.align(Alignment.TopCenter)
-                    )
-                }
-            },
-            content = {
-                when (cryptoFeedUiState) {
-                    is CryptoFeedUiState.HasCryptoFeed -> {
-                        CryptoFeedList(
-                            contentModifier = contentModifier,
-                            items = cryptoFeedUiState.cryptoFeeds,
-                            onNavigateToCryptoDetails = onNavigateToCryptoDetails
-                        )
-                    }
-
-                    is CryptoFeedUiState.NoCryptoFeed -> {
-                        if (cryptoFeedUiState.failed.isEmpty()) {
-                            Box(
-                                modifier = modifier
-                                    .fillMaxSize()
-                                    .wrapContentSize(Alignment.Center)
-                            ) {
-                                Text(
-                                    "Crypto Feed Empty",
-                                )
-                            }
-                        }
-                    }
-                }
-            })
-
+    LoadingContent(
+      pullRefreshState = pullRefreshState,
+      loading = cryptoFeedUiState.isLoading,
+      empty = when (cryptoFeedUiState) {
+        is CryptoFeedUiState.HasCryptoFeed -> false
+        is CryptoFeedUiState.NoCryptoFeed -> cryptoFeedUiState.isLoading
+      },
+      emptyContent = {
         Box(
-            modifier = modifier
-                .padding(it)
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
+          modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
         ) {
-            Text(
-                cryptoFeedUiState.failed,
-            )
+          PullRefresh(
+            loading = cryptoFeedUiState.isLoading,
+            pullRefreshState = pullRefreshState,
+            Modifier.align(Alignment.TopCenter)
+          )
         }
-    })
+      },
+      content = {
+        when (cryptoFeedUiState) {
+          is CryptoFeedUiState.HasCryptoFeed -> {
+            CryptoFeedList(
+              contentModifier = contentModifier,
+              items = cryptoFeedUiState.cryptoFeeds,
+              onNavigateToCryptoDetails = onNavigateToCryptoDetails
+            )
+          }
+
+          is CryptoFeedUiState.NoCryptoFeed -> {
+            if (cryptoFeedUiState.failed.isEmpty()) {
+              Box(
+                modifier = modifier
+                  .fillMaxSize()
+                  .wrapContentSize(Alignment.Center)
+              ) {
+                Text(
+                  "Crypto Feed Empty",
+                )
+              }
+            }
+          }
+        }
+      })
+
+    Box(
+      modifier = modifier
+        .padding(it)
+        .fillMaxSize()
+        .wrapContentSize(Alignment.Center)
+    ) {
+      Text(
+        cryptoFeedUiState.failed,
+      )
+    }
+  })
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoadingContent(
-    loading: Boolean,
-    pullRefreshState: PullRefreshState,
-    empty: Boolean,
-    emptyContent: @Composable () -> Unit,
-    content: @Composable () -> Unit,
+  loading: Boolean,
+  pullRefreshState: PullRefreshState,
+  empty: Boolean,
+  emptyContent: @Composable () -> Unit,
+  content: @Composable () -> Unit,
 ) {
-    if (empty) {
-        emptyContent()
-    } else {
-        Box(
-            modifier = Modifier, contentAlignment = Alignment.Center
-        ) {
-            content()
+  if (empty) {
+    emptyContent()
+  } else {
+    Box(
+      modifier = Modifier, contentAlignment = Alignment.Center
+    ) {
+      content()
 
-            PullRefresh(
-                loading = loading,
-                pullRefreshState = pullRefreshState,
-                Modifier.align(Alignment.TopCenter)
-            )
-        }
+      PullRefresh(
+        loading = loading,
+        pullRefreshState = pullRefreshState,
+        Modifier.align(Alignment.TopCenter)
+      )
     }
+  }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PullRefresh(
-    loading: Boolean,
-    pullRefreshState: PullRefreshState,
-    modifier: Modifier
+  loading: Boolean,
+  pullRefreshState: PullRefreshState,
+  modifier: Modifier
 ) {
-    PullRefreshIndicator(
-        refreshing = loading,
-        state = pullRefreshState,
-        modifier = modifier
-    )
+  PullRefreshIndicator(
+    refreshing = loading,
+    state = pullRefreshState,
+    modifier = modifier
+  )
 }

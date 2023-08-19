@@ -1,7 +1,7 @@
 package com.hightech.cryptoapp.main.factories
 
 import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedLoader
-import com.hightech.cryptoapp.main.composite.CryptoFeedLoaderWithFallback
+import com.hightech.cryptoapp.main.composites.CryptoFeedLoaderWithFallback
 
 class CryptoFeedCompositeFactory {
   companion object {

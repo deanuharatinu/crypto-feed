@@ -1,7 +1,7 @@
-package com.hightech.cryptoapp.crypto.feed.db.usecases
+package com.hightech.cryptoapp.crypto.feed.cache.usecases
 
-import com.hightech.cryptoapp.crypto.feed.db.CryptoFeedDao
-import com.hightech.cryptoapp.crypto.feed.db.LocalCryptoFeedItem.Companion.toDomain
+import com.hightech.cryptoapp.crypto.feed.cache.CryptoFeedDao
+import com.hightech.cryptoapp.crypto.feed.cache.LocalCryptoFeedItem.Companion.toDomain
 import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedLoader
 import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedResult
 import kotlinx.coroutines.flow.Flow

@@ -1,27 +1,41 @@
 package com.hightech.cryptoapp.frameworks
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
-import com.hightech.cryptoapp.main.db.AppDatabase
+import androidx.room.RoomDatabase
+import com.hightech.cryptoapp.crypto.feed.cache.CryptoFeedDao
+import com.hightech.cryptoapp.crypto.feed.cache.LocalCryptoFeedItem
 
-object CacheFactory {
-  @Volatile
-  private var INSTANCE: AppDatabase? = null
+class CacheFactory {
+  @Database(
+    entities = [LocalCryptoFeedItem::class],
+    version = 1,
+    exportSchema = false
+  )
+  abstract class AppDatabase : RoomDatabase() {
+    abstract fun cryptoFeedDao(): CryptoFeedDao
+  }
 
-  fun createDatabase(context: Context): AppDatabase {
-    synchronized(this) {
-      var instance = INSTANCE
+  companion object {
+    @Volatile
+    private var INSTANCE: AppDatabase? = null
 
-      if (instance == null) {
-        instance = Room.databaseBuilder(
-          context.applicationContext,
-          AppDatabase::class.java,
-          "database_app"
-        ).build()
+    fun createDatabase(context: Context): AppDatabase {
+      synchronized(this) {
+        var instance = INSTANCE
 
-        INSTANCE = instance
+        if (instance == null) {
+          instance = Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            "database_app"
+          ).build()
+
+          INSTANCE = instance
+        }
+        return instance
       }
-      return instance
     }
   }
 }

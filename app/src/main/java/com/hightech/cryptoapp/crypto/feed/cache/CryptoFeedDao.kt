@@ -1,4 +1,4 @@
-package com.hightech.cryptoapp.crypto.feed.db
+package com.hightech.cryptoapp.crypto.feed.cache
 
 import androidx.room.Dao
 import androidx.room.Query

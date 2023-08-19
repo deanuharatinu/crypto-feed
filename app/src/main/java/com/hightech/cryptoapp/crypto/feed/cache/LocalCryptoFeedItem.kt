@@ -1,4 +1,4 @@
-package com.hightech.cryptoapp.crypto.feed.db
+package com.hightech.cryptoapp.crypto.feed.cache
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

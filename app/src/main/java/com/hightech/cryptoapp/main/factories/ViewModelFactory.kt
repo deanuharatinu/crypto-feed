@@ -10,13 +10,13 @@ class ViewModelFactory {
   companion object {
     fun provideViewModel(context: Context): ViewModelProvider.Factory = viewModelFactory {
       val cryptoFeedDecorator = CryptoFeedDecoratorFactory.createCryptoFeedCacheDecorator(
-        cryptoFeedLoader = RemoteCryptoFeedLoaderFactory.createRemoteCryptoFeedLoader(),
-        cache = LocalCryptoFeedUseCaseFactory.createInsertCryptoFeedUseCase(context),
+        cryptoFeedLoader = CryptoFeedRemoteLoaderFactory.createRemoteCryptoFeedLoader(),
+        cache = CryptoFeedLocalUseCaseFactory.createInsertCryptoFeedUseCase(context),
       )
 
       val cryptoFeedComposite = CryptoFeedCompositeFactory.createCryptoFeedLoaderWithFallback(
         primary = cryptoFeedDecorator,
-        fallback = LocalCryptoFeedUseCaseFactory.createLoadCryptoFeedLocalUseCase(context)
+        fallback = CryptoFeedLocalUseCaseFactory.createLoadCryptoFeedLocalUseCase(context)
       )
 
       initializer {

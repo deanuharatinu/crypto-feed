@@ -2,7 +2,7 @@ package com.hightech.cryptoapp.main.factories
 
 import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedLoader
 import com.hightech.cryptoapp.crypto.feed.domain.usecases.InsertCryptoFeed
-import com.hightech.cryptoapp.main.decorator.CryptoFeedCacheDecorator
+import com.hightech.cryptoapp.main.decorators.CryptoFeedCacheDecorator
 
 class CryptoFeedDecoratorFactory {
   companion object {

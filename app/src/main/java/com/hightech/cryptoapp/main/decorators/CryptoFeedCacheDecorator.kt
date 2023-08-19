@@ -1,4 +1,4 @@
-package com.hightech.cryptoapp.main.decorator
+package com.hightech.cryptoapp.main.decorators
 
 import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedLoader
 import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedResult

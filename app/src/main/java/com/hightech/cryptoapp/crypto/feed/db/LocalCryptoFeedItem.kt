@@ -3,10 +3,10 @@ package com.hightech.cryptoapp.crypto.feed.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.hightech.cryptoapp.crypto.feed.domain.CoinInfoItem
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedItem
-import com.hightech.cryptoapp.crypto.feed.domain.RawItem
-import com.hightech.cryptoapp.crypto.feed.domain.UsdItem
+import com.hightech.cryptoapp.crypto.feed.domain.model.CoinInfoItem
+import com.hightech.cryptoapp.crypto.feed.domain.model.CryptoFeedItem
+import com.hightech.cryptoapp.crypto.feed.domain.model.RawItem
+import com.hightech.cryptoapp.crypto.feed.domain.model.UsdItem
 
 @Entity(tableName = "crypto_feed")
 data class LocalCryptoFeedItem(

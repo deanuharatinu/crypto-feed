@@ -1,7 +1,7 @@
 package com.hightech.cryptoapp.main.composite
 
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedLoader
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedResult
+import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedLoader
+import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

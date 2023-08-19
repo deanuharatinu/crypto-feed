@@ -25,14 +25,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedItem
+import com.hightech.cryptoapp.crypto.feed.domain.model.CryptoFeedItem
 
 @Composable
 fun CryptoFeedList(
-    modifier: Modifier = Modifier,
-    contentModifier: Modifier,
-    items: List<CryptoFeedItem>,
-    onNavigateToCryptoDetails: (CryptoFeedItem) -> Unit
+  modifier: Modifier = Modifier,
+  contentModifier: Modifier,
+  items: List<CryptoFeedItem>,
+  onNavigateToCryptoDetails: (CryptoFeedItem) -> Unit
 ) {
     Column(
         modifier = contentModifier

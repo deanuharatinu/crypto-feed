@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CryptoFeedDao {
   @Upsert
-  suspend fun insertAll(vararg localCryptoFeedItem: LocalCryptoFeedItem)
+  suspend fun insertAll(localCryptoFeedItem: List<LocalCryptoFeedItem>)
 
   @Query("SELECT * FROM crypto_feed")
   fun getAll(): Flow<List<LocalCryptoFeedItem>>

@@ -1,20 +1,13 @@
 package com.hightech.cryptoapp.crypto.feed.presentation
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedItem
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedLoader
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedResult
+import com.hightech.cryptoapp.crypto.feed.domain.model.CryptoFeedItem
+import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedLoader
+import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedResult
 import com.hightech.cryptoapp.crypto.feed.http.usecases.Connectivity
 import com.hightech.cryptoapp.crypto.feed.http.usecases.InvalidData
-import com.hightech.cryptoapp.main.factories.CryptoFeedCompositeFactory
-import com.hightech.cryptoapp.main.factories.LocalCryptoFeedUseCaseFactory
-import com.hightech.cryptoapp.main.factories.RemoteCryptoFeedLoaderFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -102,22 +95,6 @@ class CryptoFeedViewModel constructor(
             )
           }
         }
-      }
-    }
-  }
-
-  companion object {
-    fun provideFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-      initializer {
-        CryptoFeedViewModel(
-          CryptoFeedCompositeFactory.createCryptoFeedLoaderWithFallback(
-            primary = CryptoFeedCompositeFactory.createCryptoFeedLoaderWithFallback(
-              primary = RemoteCryptoFeedLoaderFactory.createRemoteCryptoFeedLoader(context),
-              fallback = RemoteCryptoFeedLoaderFactory.createRemoteCryptoFeedLoader(context)
-            ),
-            fallback = LocalCryptoFeedUseCaseFactory.createLoadCryptoFeedLocalUseCase(context)
-          )
-        )
       }
     }
   }

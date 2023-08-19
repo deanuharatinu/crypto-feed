@@ -1,11 +1,9 @@
 package com.hightech.cryptoapp.crypto.feed.http.usecases
 
 import android.util.Log
-import com.hightech.cryptoapp.crypto.feed.db.LocalCryptoFeedItem.Companion.fromDomain
-import com.hightech.cryptoapp.crypto.feed.db.usecases.InsertCryptoFeedUseCase
 import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedItemsMapper
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedLoader
-import com.hightech.cryptoapp.crypto.feed.domain.CryptoFeedResult
+import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedLoader
+import com.hightech.cryptoapp.crypto.feed.domain.usecases.CryptoFeedResult
 import com.hightech.cryptoapp.crypto.feed.http.ConnectivityException
 import com.hightech.cryptoapp.crypto.feed.http.CryptoFeedHttpClient
 import com.hightech.cryptoapp.crypto.feed.http.HttpClientResult
@@ -14,10 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class LoadCryptoFeedRemoteUseCase(
-  private val cryptoFeedHttpClient: CryptoFeedHttpClient,
-  private val insertCryptoFeedUseCase: InsertCryptoFeedUseCase,
-) :
-  CryptoFeedLoader {
+  private val cryptoFeedHttpClient: CryptoFeedHttpClient
+) : CryptoFeedLoader {
   override fun load(): Flow<CryptoFeedResult> = flow {
     cryptoFeedHttpClient.get().collect { result ->
       when (result) {
@@ -25,7 +21,6 @@ class LoadCryptoFeedRemoteUseCase(
           val cryptoFeed = result.root.data
           if (cryptoFeed.isNotEmpty()) {
             val cryptoFeedItem = CryptoFeedItemsMapper.map(cryptoFeed)
-            insertCryptoFeedUseCase.insertAll(*cryptoFeedItem.fromDomain().toTypedArray())
             emit(CryptoFeedResult.Success(cryptoFeedItem))
           } else {
             emit(CryptoFeedResult.Success(emptyList()))
@@ -46,9 +41,7 @@ class LoadCryptoFeedRemoteUseCase(
           }
         }
 
-        else -> {
-
-        }
+        else -> {}
       }
     }
   }

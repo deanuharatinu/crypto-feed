@@ -45,6 +45,10 @@ class LoadCryptoFeedRemoteUseCase(
             }
           }
         }
+
+        else -> {
+
+        }
       }
     }
   }
